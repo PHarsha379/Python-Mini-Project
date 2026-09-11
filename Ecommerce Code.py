@@ -29,6 +29,13 @@ def find_product(pid):
 
 def register():
     username = input("Choose username: ")
+    if not username.isalpha():
+        print("Invalid username. Use letters only (no numbers or special symbols).")
+        return
+    for u in users:
+        if u["username"] == username:
+            print("User already exists.")
+            return
     password = input("Choose password: ")
     users.append({"username": username, "password": password})
     print("Registered successfully! Please login.")
