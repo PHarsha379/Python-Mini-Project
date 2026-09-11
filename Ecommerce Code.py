@@ -27,16 +27,37 @@ def find_product(pid):
     return None
 
 
+def is_valid_username(username):
+    # Must start with a letter, and must contain at least one
+    # special symbol somewhere in the middle or at the end.
+    if not username or not username[0].isalpha():
+        return False
+    if not any(not ch.isalnum() for ch in username[1:]):
+        return False
+    return True
+
+
+def is_valid_password(password):
+    # Must contain letters, numbers, and special symbols together.
+    has_letter = any(ch.isalpha() for ch in password)
+    has_digit = any(ch.isdigit() for ch in password)
+    has_special = any(not ch.isalnum() for ch in password)
+    return has_letter and has_digit and has_special
+
+
 def register():
     username = input("Choose username: ")
-    if not username.isalpha():
-        print("Invalid username. Use letters only (no numbers or special symbols).")
+    if not is_valid_username(username):
+        print("Invalid username. Must start with a letter and include a special symbol in the middle/end (e.g. harsha_1).")
         return
     for u in users:
         if u["username"] == username:
             print("User already exists.")
             return
     password = input("Choose password: ")
+    if not is_valid_password(password):
+        print("Invalid password. Must include letters, numbers, and a special symbol (e.g. Harsha@123).")
+        return
     users.append({"username": username, "password": password})
     print("Registered successfully! Please login.")
 
@@ -92,7 +113,7 @@ def remove_from_cart():
             print("Removed from cart.")
             return
     print("Item not in cart.")
-
+#-----------------------------------------------------------------------------------------------
 
 def view_cart():
     if not cart:
